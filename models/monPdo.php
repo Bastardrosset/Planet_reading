@@ -13,14 +13,14 @@ class MonPdo
         $user = $env['DB_USER']; 
         $mdp = $env['DB_PASSWORD'];
 
-        self::$unPdo = new PDO($serveur.';'.$bdd, $user, $mdp);
-        self::$unPdo->query("SET CHARACTER SET utf8");
-        self::$unPdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        MonPdo::$unPdo = new PDO($serveur.';'.$bdd, $user, $mdp);
+        MonPdo::$unPdo->query("SET CHARACTER SET utf8");
+        MonPdo::$unPdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     public function __destruct()
     { 
-        self::$unPdo = null;
+        MonPdo::$unPdo = null;
     }
 
     public static function getInstance()
@@ -32,5 +32,3 @@ class MonPdo
         return self::$unPdo;
     }
 }
-
-?>

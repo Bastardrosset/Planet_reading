@@ -1,25 +1,15 @@
- 
-<?php 
-    include "./vues/header.php";
-    // include "./models/connexion-DB.php";
-    $req=$pdo->prepare("SELECT * FROM nationalite");
-    $req->setFetchMode(PDO::FETCH_OBJ);
-    $req->execute();
-    $listOfNationalities=$req->fetchAll();
-?>
-
-        <div class="container mt-3">
-            <div class="row">
-                <div class="col-9">
-                    <h2>Liste des nationalités</h2>
-                </div>
-                <div class="col-3">
-                    <a href="formNationality.php?action=Ajouter">
-                        <button type="button" class="btn btn-success pe-3"><i class="bi bi-plus-circle"></i>Ajouter une nationalité</button>
-                    </a>
-                </div>
-            </div>
-            <table class="table table-striped table-hover">
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-9">
+            <h2>Liste des genres</h2>
+        </div>
+        <div class="col-3">
+            <a href="index.php?uc=genres&action=add">
+                <button type="button" class="btn btn-success pe-3"><i class="bi bi-plus-circle"></i>Ajouter une genres</button>
+            </a>
+        </div>
+    </div>
+    <table class="table table-striped table-hover">
                 <thead>
                     <tr class="d-flex">
                     <th scope="col" class="col-md-2">Numéro</th>
@@ -29,14 +19,14 @@
                 </thead>
                 <tbody>
                     <?php
-                    foreach($listOfNationalities as $nationalite){
+                    foreach($lesGenres as $genre){
                         echo "<tr class='d-flex'>";
-                        echo "<td class='col-md-2'>$nationalite->num</td>";
-                        echo "<td class='col-md-8'>$nationalite->libelle</td>";
+                        echo "<td class='col-md-2'>".$genre->getNum()."</td>";
+                        echo "<td class='col-md-8'>".$genre->getLibelle()."</td>";
                         echo "<td class='col-md-2'>
-                            <a href='formNationality.php?action=Modifier&num=$nationalite->num' class='btn btn-success pe-3'><i class='bi bi-pen'></i>
+                            <a href='index.php?uc=genres&action=update&num=".$genre->getNum()."' class='btn btn-success pe-3'><i class='bi bi-pen'></i>
                             </a>
-                            <a href='#deleteModal' data-bs-toggle='modal' data-delete='deleteNationality.php?num=$nationalite->num' class='btn btn-danger pe-3'><i class='bi bi-trash'></i>
+                            <a href='#deleteModal' data-bs-toggle='modal' data-delete='index.php?uc=genres&action=delete&num=".$genre->getNum()."' class='btn btn-danger pe-3'><i class='bi bi-trash'></i>
                             </a>
                         </td>";
                         echo "</tr>";
@@ -45,8 +35,7 @@
                     ?>
                 </tbody>
             </table>
-        </div>
-        <div class="modal fade" id="deleteModal">
+            <div class="modal fade" id="deleteModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -56,7 +45,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Voulez vous supprimer cette nationalité ?</p>
+                        <p>Voulez vous supprimer ce genre ?</p>
                     </div>
                     <div class="modal-footer">
                         <a href="" type="button" class="btn btn-primary" id="deleteBtn">Supprimer</a>
@@ -65,7 +54,4 @@
                 </div>
             </div>
         </div>
-        
-<?php include "./vues/footer.php";
-?>
-
+</div>

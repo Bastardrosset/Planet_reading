@@ -55,8 +55,8 @@
                                         Genres
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownGenres">
-                                            <li><a class="dropdown-item" href="#">Liste des genres</a></li>
-                                            <li><a class="dropdown-item" href="#">Ajouter un genre</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=genres&action=list">Liste des genres</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=genres&action=add">Ajouter un genre</a></li>
                                         </ul>
                                     </li>
                                     <li class="nav-item dropdown">
@@ -65,10 +65,8 @@
                                         Auteurs
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownAutors">
-                                            <li><a class="dropdown-item" href="#">Liste des auteurs</a></li>
-                                            <li><a class="dropdown-item" href="#">Ajouter un auteur</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" href="#">Chercher un auteur</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=auteurs&action=list">Liste des auteurs</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=auteurs&action=add">Ajouter un auteur</a></li>
                                         </ul>
                                     </li>
                                     <li class="nav-item dropdown">
@@ -77,8 +75,8 @@
                                         Nationalités
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownNationalities">
-                                            <li><a class="dropdown-item" href="listOfNationalities.php">Liste des nationalités</a></li>
-                                            <li><a class="dropdown-item" href="formNationality.php?action=Ajouter">Ajouter une nationalité</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=nationalites&action=list">Liste des nationalités</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=nationalites&action=add">Ajouter une nationalité</a></li>
                                         </ul>
                                     </li>                                
                                     <li class="nav-item dropdown">

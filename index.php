@@ -2,6 +2,9 @@
 session_start(); 
 include "./vues/header.php";   
 include "./models/Continent.php";
+include "./models/Auteur.php";
+include "./models/Nationalite.php";
+include "./models/Genre.php";
 include "./models/monPdo.php";
 include "./vues/messagesFlash.php";
 
@@ -12,6 +15,15 @@ switch($uc){
         break;
     case "continents":
         include ("./controllers/continentController.php");
+        break;    
+    case "nationalites":
+        include ("./controllers/nationaliteController.php");
+        break;    
+    case "genres":
+        include ("./controllers/genreController.php");
+        break;    
+    case "auteurs":
+        include ("./controllers/auteurController.php");
         break;    
 }
 
