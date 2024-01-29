@@ -1,30 +1,28 @@
  
 <div class="container mt-3">
-    <div class="row">
+    <div class="row pt-3">
         <div class="col-9">
             <h2>Liste des auteurs</h2>
         </div>
-        <div class="col-3">
-            <a href="index.php?uc=auteurs&action=add">
-                <button type="button" class="btn btn-success pe-3"><i class="bi bi-plus-circle"></i>Ajouter un auteur</button>
-            </a>
-        </div>
+        <div class="col-3"><a href="index.php?uc=auteurs&action=add" class='btn btn-success'><i class="bi bi-plus-circle me-1"></i>Ajouter un auteur</a> </div>
+
     </div>
+
     <form id="formRecherche" action="index.php?uc=auteurs&action=list" method="post" class="border border-primary rounded p-3 mt-3 mb-3">
         <div class="row">
             <div class="col">
-                <input type="text" class='form-control' id='nom' placehoder='Nom de l\'auteur' name='nom' value="<?php echo $nom; ?>">
+                <input type="text" class='form-control' id='nom' placehoder='nom de l\' auteur' name='nom' value="<?php echo $nom; ?>">
             </div>
             <div class="col">
-                <input type="text" class='form-control' id='prenom' placehoder='Prénom de l\'auteur' name='prenom' value="<?php echo $prenom; ?>">
+                <input type="text" class='form-control' id='prenom' placehoder='prénom de l\' auteur' name='prenom' value="<?php echo $prenom; ?>">
             </div>
             <div class="col">
                 <select name="nationalite" class="form-control">
                     <?php
-                    echo "<option value='Toutes'>Toutes les nationalites</option>";
+                    echo "<option value='Toutes'>Toutes les nationalités</option>";
                     foreach ($lesNationalites as $nationalite) {
                         $selection = $nationalite->numero == $nationaliteSel ? 'selected' : '';
-                        echo "<option value='".$nationalite->numero."'". $selection.">".$nationalite->libNation."</option>";
+                        echo "<option value='" . $nationalite->numero . "'" . $selection . ">" . $nationalite->libNation . "</option>";
                     }
                     ?>
                 </select>
@@ -34,36 +32,35 @@
             </div>
         </div>
     </form>
-    <table class="table table-striped table-hover">
+
+
+    <table class="table table-hover table-striped">
         <thead>
             <tr class="d-flex">
                 <th scope="col" class="col-md-2">Numéro</th>
-                <th scope="col" class="col-md-3">Nom</th>
-                <th scope="col" class="col-md-3">Prénom</th>
+                <th scope="col" class="col-md-3">nom</th>
+                <th scope="col" class="col-md-3">prenom</th>
                 <th scope="col" class="col-md-2">Nationalité</th>
                 <th scope="col" class="col-md-2">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php
-                foreach($listAuteurs as $auteur){
-                    echo "<tr class='d-flex'>";
-                    echo "<td class='col-md-2'>$auteur->numero</td>";
-                    echo "<td class='col-md-3'>$auteur->nom</td>";
-                    echo "<td class='col-md-3'>$auteur->prenom</td>";
-                    echo "<td class='col-md-2'>$auteur->libelle</td>";
-                    echo "<td class='col-md-2'>
-                        <a href='index.php?uc=auteurs&action=update&num=".$auteur->numero."' class='btn btn-success pe-3'>
-                            <i class='bi bi-pen'></i>
-                        </a>
-                        <a href='#deleteModal' data-bs-toggle='modal' data-delete='index.php?uc=auteurs&action=delete&num='".$auteur->numero."' class='btn btn-danger pe-3'>
-                            <i class='bi bi-trash'></i>
-                        </a>
-                        </td>";
-                    echo "</tr>";
+            foreach ($lesAuteurs as $auteur) {
+                echo "<tr class='d-flex'>";
+                echo "<td class='col-md-2'>$auteur->numero</td>";
+                echo "<td class='col-md-3'>$auteur->nom</td>";
+                echo "<td class='col-md-3'>$auteur->prenom</td>";
+                echo "<td class='col-md-2'>$auteur->libelle</td>";
+                echo "<td class='col-md-2'>
+                        <a href='index.php?uc=auteurs&action=update&num=" . $auteur->numero . "' class='btn btn-success'><i class='bi bi-pen'></i></a>
+                        <a href='#deleteModal' data-bs-toggle='modal' data-message='Voulez vous supprimer cet auteur ?' data-delete='index.php?uc=auteurs&action=delete&num=" . $auteur->numero . "' class='btn btn-danger'><i class='bi bi-trash'></i></a>
+                    </td>";
+                echo "</tr>";
+            }
 
-                }
             ?>
+
         </tbody>
     </table>
 </div>

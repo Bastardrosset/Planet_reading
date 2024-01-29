@@ -1,130 +1,149 @@
 <?php
 class Genre {
+    
     /**
-     * number of genre
+     * numero du genre
      *
      * @var int
      */
     private $num;
+
     /**
-     * libelle of genre
+     * Libelle du genre
      *
      * @var string
      */
     private $libelle;
-    
+
     /**
      * Get the value of num
-     */
+     */ 
     public function getNum()
     {
-        return $this->num;
+    return $this->num;
     }
 
     /**
-     * read the libelle
+     * Lit le libelle
+     *
+     * @return string
      */
-    public function getLibelle(): string
+    public function getLibelle() : string
     {
-        return $this->libelle;
+    return $this->libelle;
     }
 
     /**
-     * write the libelle
+     * ecrit dans le libellé
      *
      * @param string $libelle
      * @return self
      */
-    public function setLibelle(string $libelle): self
+    public function setLibelle(string $libelle) : self
     {
-        $this->libelle = $libelle;
+    $this->libelle = $libelle;
 
-        return $this;
+    return $this;
     }
 
     /**
-     * return all genres
+     * Retourne l'ensemble des genres
      *
-     * @return array Genre
+     * @return Genre[] tableau d'objet genre
      */
-    public static function findAll(): array
+    public static function findAll() :array
     {
         $req=MonPdo::getInstance()->prepare("SELECT * FROM genre");
-        $req->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Genre");
+        $req->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,'Genre');
         $req->execute();
-        $results=$req->fetchAll();
-        return $results;
+        $lesResultats=$req->fetchAll();
+        return $lesResultats;
     }
+
     /**
-     * find a genre by id
+     * Trouve un genre par son num
      *
-     * @param integer $id
-     * @return Genre
+     * @param integer $id numéro du genre
+     * @return Genre objet genre trouvé
      */
-    public static function findById(int $id): Genre
+    public static function findById(int $id) :Genre
     {
-        $req=MonPdo::getInstance()->prepare("SELECT * FROM genre where num= :id");
-        $req->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Genre");
-        $req->bindParam(":id", $id);
+        $req=MonPdo::getInstance()->prepare("SELECT * FROM genre WHERE num= :id");
+        $req->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,'Genre');
+        $req->bindParam(':id', $id);
         $req->execute();
-        $results=$req->fetch();
-        return $results;
+        $leResultats=$req->fetch();
+        return $leResultats;
     }
+
     /**
-     * Add a genre
+     * Permet d'ajouter un genre
      *
-     * @param Genre $genre
-     * @return integer
+     * @param Genre $genre genre à ajouter
+     * @return integer resultat (1 si l'opération a réussi, 0 sinon)
      */
-    public static function add(Genre $genre): int
+    public static function add(Genre $genre) :int
     {
-        $req=MonPdo::getInstance()->prepare("INSERT INTO genre(libelle) values(:libelle)");
+        $req=MonPdo::getInstance()->prepare("INSERT INTO genre(libelle) VALUES(:libelle)");
         $libelle=$genre->getLibelle();
-        $req->bindParam(":libelle", $libelle);
+        $req->bindParam(':libelle', $libelle);
         $nb=$req->execute();
-        return $nb;
+        return $nb;  
     }
+
     /**
-     * update a genre 
+     * permet de modifier un genre
      *
-     * @param Genre $genre
-     * @return integer
+     * @param Genre $genre genre à modifier
+     * @return integer resultat (1 si l'opération a réussi, 0 sinon)
      */
-    public static function update(Genre $genre): int
+    public static function update(Genre $genre) :int
     {
         $req=MonPdo::getInstance()->prepare("UPDATE genre SET libelle= :libelle WHERE num= :id");
         $num=$genre->getNum();
         $libelle=$genre->getLibelle();
-        $req->bindParam(":id", $num);
-        $req->bindParam(":libelle", $libelle);
+        $req->bindParam(':id', $num);
+        $req->bindParam(':libelle', $libelle);
         $nb=$req->execute();
-        return $nb;
+        return $nb;  
     }
+
     /**
-     * delete a genre
+     * Permet de supprimer un genre
      *
      * @param Genre $genre
      * @return integer
      */
-    public static function delete(Genre $genre): int
+    public static function delete(Genre $genre) :int
     {
         $req=MonPdo::getInstance()->prepare("DELETE FROM genre WHERE num= :id");
         $num=$genre->getNum();
-        $req->bindParam(":id", $num);
+        $req->bindParam(':id', $num);
         $nb=$req->execute();
-        return $nb;
+        return $nb; 
     }
 
 
     /**
-     * Set the value of num
-     */
-    public function setNum(int $num): self
+     * Set numero du genre
+     *
+     * @param  int  $num  numero du genre
+     *
+     * @return  self
+     */ 
+    public function setNum(int $num) :self
     {
         $this->num = $num;
 
         return $this;
     }
-}
 
-?>
+    public static function nombreGenres():int
+    {
+        $texteReq="SELECT count(*) AS 'nb' FROM genre";
+        $req=MonPdo::getInstance()->prepare($texteReq);
+        $req->execute();
+        $leResultat=$req->fetch();
+        return $leResultat[0];
+    }
+}

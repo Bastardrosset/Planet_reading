@@ -1,33 +1,37 @@
 <?php
 class Nationalite {
+    
     /**
-     * number of nationalite
+     * numero du nationalité
      *
      * @var int
      */
     private $num;
+
     /**
-     * libelle of nationalite
+     * Libelle du nationalité
      *
      * @var string
      */
     private $libelle;
+
     /**
-     * foreign key of numContinent
+     * num continent (clé étrangère) relié à num de Continent
      *
      * @var int
      */
     private $numContinent;
-    
+
     /**
      * Get the value of num
-     */
+     */ 
     public function getNum()
     {
-        return $this->num;
+    return $this->num;
     }
-       /**
-     * Set numéro of nationalite
+
+        /**
+     * Set numéro de la nationalite
      *
      * @param  int  $num  numéro de la nationalité
      *
@@ -39,44 +43,48 @@ class Nationalite {
 
         return $this;
     }
-
+    
     /**
-     * read the libelle
+     * Lit le libelle
+     *
+     * @return string
      */
-    public function getLibelle(): string
+    public function getLibelle() : string
     {
-        return $this->libelle;
+    return $this->libelle;
     }
 
     /**
-     * write the libelle
+     * ecrit dans le libellé
      *
      * @param string $libelle
      * @return self
      */
-    public function setLibelle(string $libelle): self
+    public function setLibelle(string $libelle) : self
     {
-        $this->libelle = $libelle;
+    $this->libelle = $libelle;
 
-        return $this;
+    return $this;
     }
+
+    
     /**
-     * Get the value of numContinent
+     * renvoie l'objet continent associé
      *
      * @return Continent
      */
-    public function getContinent(): Continent
+    public function getContinent() : Continent
     {
         return Continent::findById($this->numContinent);
     }
 
     /**
-     * Set the value of numContinent
+     * ecrit le num continent
      *
      * @param Continent $continent
      * @return self
      */
-    public function setContinent(Continent $continent): self
+    public function setContinent(Continent $continent) : self
     {
         $this->numContinent = $continent->getNum();
 
@@ -84,86 +92,87 @@ class Nationalite {
     }
 
     /**
-     * return all nationalites
+     * Retourne l'ensemble des nationalités
      *
-     * @return array nationalite
+     * @return Nationalite[] tableau d'objet Nationalité
      */
-    public static function findAll(?string $libelle="", ?string $continent="Tous"): array
+    public static function findAll(?string $libelle="", ?string $continent="Tous") :array
     {
-        $textReq = "SELECT n.num AS numero, n.libelle AS 'libNation', c.libelle AS 'libContinent' FROM nationalite n, continent c WHERE n.numContinent=c.num";
-
+        $texteReq="SELECT n.num AS numero, n.libelle AS 'libNation', c.libelle AS 'libContinent' FROM nationalite n, continent c WHERE n.numContinent=c.num";
         if ($libelle != "") {
-            $textReq .= " AND n.libelle LIKE '%" . $libelle . "%'";
+            $texteReq .= " and n.libelle like '%" . $libelle . "%'";
         }
         if ($continent != "Tous") {
-            $textReq .= " AND c.num =" . $continent;
+            $texteReq .= " and c.num =" . $continent;
         }
-
-        $textReq .= " ORDER BY n.libelle";
-
-        $req = MonPdo::getInstance()->prepare($textReq);
+        $texteReq.=" order by n.libelle";
+        $req = MonPdo::getInstance()->prepare($texteReq);
         $req->setFetchMode(PDO::FETCH_OBJ);
         $req->execute();
-        $results = $req->fetchAll();
-        return $results;
+        $lesResultats=$req->fetchAll();
+        return $lesResultats;
     }
+
     /**
-     * find a nationalite by id
+     * Trouve une nationalité par son num
      *
-     * @param integer $id
-     * @return Nationalite
+     * @param integer $id numéro du nationalité
+     * @return Nationalite objet nationalité trouvé
      */
-    public static function findById(int $id): Nationalite
+    public static function findById(int $id) :Nationalite
     {
         $req=MonPdo::getInstance()->prepare("SELECT * FROM nationalite WHERE num= :id");
-        $req->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Nationalite");
-        $req->bindParam(":id", $id);
+        $req->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,'Nationalite');
+        $req->bindParam(':id', $id);
         $req->execute();
-        $results=$req->fetch();
-        return $results;
+        $leResultats=$req->fetch();
+        return $leResultats;
     }
+
     /**
-     * Add a nationalite
+     * Permet d'ajouter une nationalité
      *
-     * @param Nationalite $nationalite
-     * @return integer
+     * @param Nationalite $nationalite continent à ajouter
+     * @return integer resultat (1 si l'opération a réussi, 0 sinon)
      */
-    public static function add(Nationalite $nationalite): int
+    public static function add(Nationalite $nationalite) :int
     {
-        $req = MonPdo::getInstance()->prepare("INSERT INTO nationalite (libelle, numContinent) VALUES (:libelle, :numContinent)");
-        $req->bindParam(":libelle", $nationalite->getLibelle());
-        $req->bindParam(":numContinent", $nationalite->numContinent);
+        $req=MonPdo::getInstance()->prepare("INSERT INTO nationalite (libelle,numContinent) VALUES(:libelle, :numContinent)");
+        $req->bindParam(':libelle', $nationalite->getLibelle());
+        $req->bindParam(':numContinent', $nationalite->numContinent);
         $nb=$req->execute();
-        
-        return $nb;
+        return $nb;  
     }
+
     /**
-     * update a nationalite 
+     * permet de modifier une nationalité
      *
-     * @param Nationalite $nationalite
-     * @return integer
+     * @param Nationalite $nationalité continent à modifier
+     * @return integer resultat (1 si l'opération a réussi, 0 sinon)
      */
-    public static function update(Nationalite $nationalite): int
+    public static function update(Nationalite $nationalite) :int
     {
         $req=MonPdo::getInstance()->prepare("UPDATE nationalite SET libelle= :libelle, numContinent= :numContinent WHERE num= :id");
-        $req->bindParam(":id", $nationalite->getNum());
-        $req->bindParam(":libelle", $nationalite->getLibelle());
-        $req->bindParam(":numContinent", $nationalite->numContinent);
+        $req->bindParam(':id', $nationalite->getNum());
+        $req->bindParam(':libelle', $nationalite->getLibelle());
+        $req->bindParam(':numContinent', $nationalite->numContinent);
         $nb=$req->execute();
-        return $nb;
+        return $nb;  
     }
+
     /**
-     * delete a Nationalite
+     * Permet de supprimer une nationalité
      *
-     * @param Nationalite $Nationalite
+     * @param Nationalite $nationalite
      * @return integer
      */
-    public static function delete(Nationalite $nationalite): int
+    public static function delete(Nationalite $nationalite) :int
     {
         $req=MonPdo::getInstance()->prepare("DELETE FROM nationalite WHERE num= :id");
-        $req->bindParam(":id", $nationalite->getnum());
+        $req->bindParam(':id', $nationalite->getNum());
         $nb=$req->execute();
-        return $nb;
+        return $nb; 
     }
+
 
 }

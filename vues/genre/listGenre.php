@@ -1,47 +1,48 @@
-<div class="container mt-3">
-    <div class="row">
+<div class="container mt-5">
+
+    <div class="row pt-3">
         <div class="col-9">
             <h2>Liste des genres</h2>
         </div>
         <div class="col-3">
-            <a href="index.php?uc=genres&action=add">
-                <button type="button" class="btn btn-success pe-3"><i class="bi bi-plus-circle"></i>Ajouter une genres</button>
-            </a>
+            <a href="index.php?uc=genres&action=add" class='btn btn-success'>
+                <i class="bi bi-plus-circle me-1"></i> Ajouter un genre</a> 
         </div>
     </div>
-    <table class="table table-striped table-hover">
-                <thead>
-                    <tr class="d-flex">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr class="d-flex">
                     <th scope="col" class="col-md-2">Numéro</th>
                     <th scope="col" class="col-md-8">Libellé</th>
                     <th scope="col" class="col-md-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach($lesGenres as $genre){
-                        echo "<tr class='d-flex'>";
-                        echo "<td class='col-md-2'>".$genre->getNum()."</td>";
-                        echo "<td class='col-md-8'>".$genre->getLibelle()."</td>";
-                        echo "<td class='col-md-2'>
-                            <a href='index.php?uc=genres&action=update&num=".$genre->getNum()."' class='btn btn-success pe-3'><i class='bi bi-pen'></i>
-                            </a>
-                            <a href='#deleteModal' data-bs-toggle='modal' data-delete='index.php?uc=genres&action=delete&num=".$genre->getNum()."' class='btn btn-danger pe-3'><i class='bi bi-trash'></i>
-                            </a>
-                        </td>";
-                        echo "</tr>";
-
-                    }
-                    ?>
-                </tbody>
-            </table>
-            <div class="modal fade" id="deleteModal">
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach($lesGenres as $genre){
+                echo "<tr class='d-flex'>";
+                echo "<td class='col-md-2'>".$genre->getNum()."</td>";
+                echo "<td class='col-md-8'>".$genre->getLibelle()."</td>";
+                echo "<td class='col-md-2'>
+                        <a href='index.php?uc=genres&action=update&num=".$genre->getNum()."' class='btn btn-success pe-3'>
+                            <i class='bi bi-pen'></i>
+                        </a>
+                        <a href='#deleteModal' data-bs-toggle='modal' data-message='Voulez vous supprimer ce genre ?' data-delete='index.php?uc=genres&action=delete&num=".$genre->getNum()."' class='btn btn-danger pe-3'>
+                            <i class='bi bi-trash'></i>
+                        </a>
+                    </td>";
+                echo "</tr>";
+            }
+            ?>
+            </tbody>
+        </table>
+        <div class="modal fade" id="deleteModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Comfirmation de suppression</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
                         </button>
                     </div>
                     <div class="modal-body">

@@ -5,7 +5,7 @@
         </div>
         <div class="col-3">
             <a href="index.php?uc=continents&action=add">
-                <button type="button" class="btn btn-success pe-3"><i class="bi bi-plus-circle"></i>Ajouter une continents</button>
+                <button type="button" class="btn btn-success pe-3"><i class="bi bi-plus-circle me-1"></i>Ajouter un continent</button>
             </a>
         </div>
     </div>

@@ -1,27 +1,79 @@
-<main>
-        <div class="p-5 mb-4 bg-light rounded-3">
-                <div class="container-fluid py-5">
-                    <h1 class="display-5 fw-bold">Custom jumbotron</h1>
-                    <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it to your liking.</p>
-                    <button class="btn btn-primary btn-lg" type="button">Example button</button>
-                </div>
-        </div>
+<script>
+window.onload = function() {
 
-        <div class="row align-items-md-stretch">
-                <div class="col-md-6">
-                    <div class="h-100 p-5 text-white bg-dark rounded-3">
-                        <h2>Change the background</h2>
-                        <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p>
-                        <button class="btn btn-outline-light" type="button">Example button</button>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="h-100 p-5 bg-light border rounded-3">
-                        <h2>Add borders</h2>
-                        <p>Or, keep it light and add a border for some added definition to the boundaries of your content. Be sure to look under the hood at the source HTML here as we've adjusted the alignment and sizing of both column's content for equal-height.</p>
-                        <button class="btn btn-outline-secondary" type="button">Example button</button>
-                    </div>
-                </div>
-           </div>
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	exportEnabled: true,
+	animationEnabled: true,
+	title: {
+		text: "Desktop Browser Market Share in 2016"
+	},
+	data: [{
+		type: "pie",
+		startAngle: 25,
+		toolTipContent: "<b>{label}</b>: {y}%",
+		showInLegend: "true",
+		legendText: "{label}",
+		indexLabelFontSize: 16,
+		indexLabel: "{label} - {y}%",
+		dataPoints: <?php echo json_encode(Livre::livreParGenre(), JSON_NUMERIC_CHECK) ?>
+	}]
+});
+chart.render();
+
+}
+</script>
+
+<body>
+
+<main>
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Bienvenue !</h1>
+                <p class="col-md-8 fs-4">Bienvenue sur le site d'administration BiblioWeb.</p>
+                <button class="btn btn-primary btn-lg" type="button">Learn more&raquo;</button>
+            </div>
     </div>
-    </main>
+    <div class="container">
+        <div class="row align-items-md-stretch">
+            <div class="col-md-8" style="height: 600px">
+                <div class="p-5 bg-light border rounded-3">
+                    <h2>Statistiques des livres</h2>
+                    <div id="chartContainer">
+                        
+                    </div>
+                    <button class="btn btn-outline-success" type="button">Example button</button>
+                </div>
+            </div>
+            <div class="col-md-4" style="height: 600px">
+                <div class="p-5 bg-light border rounded-3">
+                    <h2>Statistiques générales</h2>
+                    <div class="mt-3">
+                        <h4>
+                            <a class="text-decoration-none" href="index.php?uc=livres&action=list">
+                                <span class="badge bg-success"><?php echo Livre::nombreLivres(); ?></span>
+                                livres
+                            </a>
+                        </h4>
+                        <hr/>
+                        <h4>
+                            <a class="text-decoration-none" href="index.php?uc=auteurs&action=list">
+                                <span class="badge bg-success"><?php echo Auteur::nombreAuteurs(); ?></span>
+                                auteurs
+                            </a>
+                        </h4>
+                        <hr/>
+                        <h4>
+                            <a class="text-decoration-none" href="index.php?uc=genres&action=list">
+                                <span class="badge bg-success"><?php echo Genre::nombreGenres(); ?></span>
+                                genres
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>

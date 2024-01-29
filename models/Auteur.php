@@ -1,41 +1,46 @@
 <?php
 class Auteur {
+    
     /**
-     * number of auteur
+     * numero de l'auteur
      *
      * @var int
      */
     private $num;
+
     /**
-     * firstname of auteur
-     *
-     * @var string
-     */
-    private $prenom;
-    /**
-     * name of auteur
+     * nom de l'auteur
      *
      * @var string
      */
     private $nom;
+
     /**
-     * foreign key of num nationalité
+     * prenom de l'auteur
+     *
+     * @var string
+     */
+    private $prenom;
+
+    /**
+     * num nationalite (clé étrangère) relié à num de Nationalite
      *
      * @var int
      */
     private $numNationalite;
-    
+
     /**
      * Get the value of num
-     */
+     */ 
     public function getNum()
     {
-        return $this->num;
+    return $this->num;
     }
-       /**
-     * Set numéro of auteur
+
+        /**
+     * Set numéro de la auteur
      *
-     * @param  int  $num  numéro de l'auteur'
+     * @param  int  $num  numéro de l'auteur
      *
      * @return  self
      */ 
@@ -45,6 +50,7 @@ class Auteur {
 
         return $this;
     }
+
     /**
      * Get the value of nom
      */
@@ -54,7 +60,11 @@ class Auteur {
     }
 
     /**
-     * Set the value of nom
+     * Set nom de l'auteur
+     *
+     * @param  string  $nom  nom de l'auteur
+     *
+     * @return  self
      */
     public function setNom(string $nom): self
     {
@@ -72,31 +82,36 @@ class Auteur {
     }
 
     /**
-     * Set the value of prenom
+     * Set prenom de l'auteur
+     *
+     * @param  string  $prenom prenom de l'auteur
+     *
+     * @return  self
      */
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
 
         return $this;
-    }
+    } 
+
     /**
-     * Get the value of Nationalite
+     * renvoie l'objet nationalite associé
      *
      * @return Nationalite
      */
-    public function getNationalite(): Nationalite
+    public function getNationalite() : Nationalite
     {
         return Nationalite::findById($this->numNationalite);
     }
 
     /**
-     * Set the value of num nationalite
+     * ecrit le num nationalite
      *
-     * @param Continent $nationalite
+     * @param Nationalite $nationalite
      * @return self
      */
-    public function setNationalite(Nationalite $nationalite): self
+    public function setNationalite(Nationalite $nationalite) : self
     {
         $this->numNationalite = $nationalite->getNum();
 
@@ -104,90 +119,105 @@ class Auteur {
     }
 
     /**
-     * return all auteurs
+     * Retourne l'ensemble des auteurs
      *
-     * @return array auteur
+     * @return Auteur[] tableau d'objet Auteur
      */
-    public static function findAll(?string $prenom="", ?string $nom="", ?string $nationalite="Toutes"): array
+    public static function findAll(?string $nom="", ?string $prenom = "", ?string $nationalite="Toutes") :array
     {
-        $textReq = "SELECT a.num AS numero, a.nom, a.prenom, n.libelle FROM auteur a, nationalite n WHERE a.numNationalite=n.num";
-
+        $texteReq="SELECT a.num AS numero, a.nom , a.prenom, n.libelle FROM auteur a, nationalite n WHERE a.numnationalite=n.num";
         if ($nom != "") {
-            $textReq .= " AND a.nom LIKE '%" . $nom . "%'";
+            $texteReq .= " and a.nom like '%" . $nom . "%'";
         }
         if ($prenom != "") {
-            $textReq .= " AND a.prenom LIKE '%" . $prenom . "%'";
+            $texteReq .= " and a.prenom like '%" . $prenom . "%'";
         }
         if ($nationalite != "Toutes") {
-            $textReq .= " AND n.num =" . $nationalite;
+            $texteReq .= " and n.num =" . $nationalite;
         }
-
-        $textReq .= " ORDER BY a.nom";
-
-        $req = MonPdo::getInstance()->prepare($textReq);
+        $texteReq.=" order by a.nom";
+        $req = MonPdo::getInstance()->prepare($texteReq);
         $req->setFetchMode(PDO::FETCH_OBJ);
         $req->execute();
-        $results = $req->fetchAll();
-        return $results;
+        $lesResultats=$req->fetchAll();
+        return $lesResultats;
     }
+
     /**
-     * find a auteur by id
+     * Trouve une auteur par son num
      *
-     * @param integer $id
-     * @return Auteur
+     * @param integer $id numéro de l'auteur
+     * @return Auteur objet auteur trouvé
      */
-    public static function findById(int $id): Auteur
-    {
-        $req=MonPdo::getInstance()->prepare("SELECT * FROM auteur WHERE num= :id");
-        $req->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Auteur");
-        $req->bindParam(":id", $id);
-        $req->execute();
-        $results=$req->fetch();
-        return $results;
+    public static function findById(int $id): ?Auteur {
+        try {
+            $req = MonPdo::getInstance()->prepare("SELECT * FROM auteur WHERE num= :id");
+            $req->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Auteur');
+            $req->bindParam(':id', $id, PDO::PARAM_INT);
+            $req->execute();
+            return $req->fetch() ?: null;
+        } catch (PDOException $e) {
+            // Gérer l'erreur
+            return null;
+        }
     }
+
     /**
-     * Add a auteur
+     * Permet d'ajouter un auteur
+     * continent à ajouter
+     * @return integer resultat (1 si l'opération a réussi, 0 sinon)
+     */
+    public static function add(Auteur $auteur): int {
+        try {
+            $req = MonPdo::getInstance()->prepare("INSERT INTO auteur (nom, prenom, numNationalite) VALUES (:nom, :prenom, :numNationalite)");
+            // Assurez-vous que les getters existent et retournent les bonnes valeurs.
+            $req->bindParam(':nom', $auteur->getNom());
+            $req->bindParam(':prenom', $auteur->getPrenom());
+            $req->bindParam(':numNationalite', $auteur->getNationalite(), PDO::PARAM_INT);
+            $req->execute();
+            return $req->rowCount();
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * permet de modifier un auteur
+     *
+     * @param Auteur $auteur auteur à modifier
+     * @return integer resultat (1 si l'opération a réussi, 0 sinon)
+     */
+    public static function update(Auteur $auteur): int {
+        try {
+            $req = MonPdo::getInstance()->prepare("UPDATE auteur SET nom=:nom, prenom=:prenom, numNationalite=:numNationalite WHERE num=:id");
+            $req->bindParam(':id', $auteur->getNum(), PDO::PARAM_INT);
+            $req->execute();
+            return $req->rowCount();
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Permet de supprimer un auteur
      *
      * @param Auteur $auteur
      * @return integer
      */
-    public static function add(Auteur $auteur): int
-    {
-        $req = MonPdo::getInstance()->prepare("INSERT INTO auteur (nom, prenom, numNationalite) VALUES (:nom, :prenom, :numNationalite)");
-        $req->bindParam(":nom", $auteur->getNom());
-        $req->bindParam(":prenom", $auteur->getPrenom());
-        $req->bindParam(":numNationalite", $auteur->numNationalite);
-        $nb=$req->execute();
-        
-        return $nb;
-    }
-    /**
-     * update a auteur 
-     *
-     * @param Auteur $auteur
-     * @return integer
-     */
-    public static function update(Auteur $auteur): int
-    {
-        $req=MonPdo::getInstance()->prepare("UPDATE auteur SET nom= :nom, prenom= :prenom, numNationalite= :numNationalite WHERE num= :id");
-        $req->bindParam(":id", $auteur->getNum());
-        $req->bindParam(":nom", $auteur->getNom());
-        $req->bindParam(":prenom", $auteur->getPrenom());
-        $req->bindParam(":numNationalite", $auteur->numNationalite);
-        $nb=$req->execute();
-        return $nb;
-    }
-    /**
-     * delete a Auteur
-     *
-     * @param Auteur $Auteur
-     * @return integer
-     */
-    public static function delete(Auteur $auteur): int
+    public static function delete(Auteur $auteur) :int
     {
         $req=MonPdo::getInstance()->prepare("DELETE FROM auteur WHERE num= :id");
-        $req->bindParam(":id", $auteur->getnum());
+        $req->bindParam(':id', $auteur->getNum());
         $nb=$req->execute();
-        return $nb;
+        return $nb; 
+    }
+
+    public static function nombreAuteurs():int
+    {
+        $texteReq="SELECT count(*) AS 'nb' FROM auteur";
+        $req=MonPdo::getInstance()->prepare($texteReq);
+        $req->execute();
+        $leResultat=$req->fetch();
+        return $leResultat[0];
     }
 }

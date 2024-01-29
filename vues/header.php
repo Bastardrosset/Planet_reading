@@ -52,6 +52,7 @@
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item dropdown">
                                         <a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdownGenres" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-hash"></i>
                                         Genres
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownGenres">
@@ -85,8 +86,18 @@
                                         Continents
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownContinent">
-                                            <li><a class="dropdown-item" href="index.php?uc=continents&action=list">Gestion des continents</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=continents&action=list">Liste des continents</a></li>
                                             <li><a class="dropdown-item" href="index.php?uc=continents&action=add">Ajouter un continent</a></li>
+                                        </ul>
+                                    </li>                                
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdownLivre" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-book-half"></i>
+                                        Livres
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownLivre">
+                                            <li><a class="dropdown-item" href="index.php?uc=livres&action=list">Liste des livres</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=livres&action=add">Ajouter un livre</a></li>
                                         </ul>
                                     </li>                                
                                 </ul>

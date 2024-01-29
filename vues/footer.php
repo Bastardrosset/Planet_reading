@@ -1,4 +1,4 @@
-<footer class="pt-3 mt-4 text-muted border-top">
+<footer class="pt-3 mt-4 text-muted border-top text-center">
     &copy; 2022
 </footer>
 

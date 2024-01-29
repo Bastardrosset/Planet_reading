@@ -2,6 +2,7 @@
 session_start(); 
 include "./vues/header.php";   
 include "./models/Continent.php";
+include "./models/Livre.php";
 include "./models/Auteur.php";
 include "./models/Nationalite.php";
 include "./models/Genre.php";
@@ -24,6 +25,9 @@ switch($uc){
         break;    
     case "auteurs":
         include ("./controllers/auteurController.php");
+        break;    
+    case "livres":
+        include ("./controllers/livreController.php");
         break;    
 }
 
